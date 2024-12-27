@@ -27,8 +27,12 @@ RUN pip install torch torchvision torchaudio --extra-index-url https://download.
     && pip install git+https://github.com/UX-Decoder/Semantic-SAM.git@package \
     && cd ops && bash make.sh && cd .. \
     && pip install mpi4py \
-    && pip install openai \
-    && pip install gradio==4.17.0
+    && pip install openai
+
+
+# RUN pip install "gradio==4.17.0" "fastapi==0.95.*" "pydantic==1.10.*"
+RUN pip install gradio
+
 
 # Download pretrained models
 RUN sh download_ckpt.sh
