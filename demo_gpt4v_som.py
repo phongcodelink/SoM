@@ -155,9 +155,12 @@ def gpt4v_response(message, history):
     global history_texts; history_texts = []    
     try:
         res = request_gpt4v(message, history_images[0])
+        print(res)
         history_texts.append(res)
         return res
     except Exception as e:
+        print("[ERROR] Error run GPT4 V")
+        print(e)
         return None
 
 def highlight(mode, alpha, label_mode, anno_mode, *args, **kwargs):
