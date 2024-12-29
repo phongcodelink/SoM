@@ -12,6 +12,8 @@ import gradio as gr
 import torch
 import argparse
 from PIL import Image
+import os
+import urllib.request
 # seem
 from seem.modeling.BaseModel import BaseModel as BaseModel_Seem
 from seem.utils.distributed import init_distributed as init_distributed_seem
@@ -47,6 +49,25 @@ from pydub.playback import play
 import matplotlib.colors as mcolors
 css4_colors = mcolors.CSS4_COLORS
 color_proposals = [list(mcolors.hex2color(color)) for color in css4_colors.values()]
+
+
+# Function to download files
+def download_file(url, filename):
+    if not os.path.exists(filename):
+        print(f"[INFO] Downloading {filename}...")
+        try:
+            urllib.request.urlretrieve(url, filename)
+            print(f"[INFO] {filename} downloaded successfully.")
+        except Exception as e:
+            print(f"[ERROR] Failed to download {filename}: {e}")
+    else:
+        print(f"[INFO] {filename} already exists. Skipping download.")
+
+
+# Download necessary files
+download_file("https://github.com/UX-Decoder/Semantic-SAM/releases/download/checkpoint/swinl_only_sam_many2many.pth", "swinl_only_sam_many2many.pth")
+download_file("https://huggingface.co/xdecoder/SEEM/resolve/main/seem_focall_v1.pt", "seem_focall_v1.pt")
+download_file("https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth", "sam_vit_h_4b8939.pth")
 
 client = OpenAI()
 
