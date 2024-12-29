@@ -108,7 +108,7 @@ history_masks = []
 history_texts = []
 @torch.no_grad()
 def inference(image, slider, mode, alpha, label_mode, anno_mode, *args, **kwargs):
-    logger.debug("<<<<< START INFER")
+    logger.info("<<<<< START INFER")
     global history_images; history_images = []
     global history_masks; history_masks = []    
 
@@ -179,7 +179,7 @@ def inference(image, slider, mode, alpha, label_mode, anno_mode, *args, **kwargs
 
 
 def gpt4v_response(message, history=[]):
-    logger.debug("<<<<<< START GPT4 FUNCTION")
+    logger.info("<<<<<< START GPT4 FUNCTION")
     global history_images
     global history_texts; history_texts = []    
     try:
@@ -263,5 +263,5 @@ with demo:
                        outputs=image_out)
     chatBtn.click(gpt4v_response, inputs=[user_input], outputs=[chat_output])
 
-demo.queue().launch(share=True, server_port=6092)
+demo.launch(share=True, server_port=6092)
 
