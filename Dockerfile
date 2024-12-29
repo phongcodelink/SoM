@@ -12,6 +12,9 @@ RUN apt-get update && \
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
+# Copy the current directory contents into the container at /usr/src/app
+COPY . .
+
 ENV FORCE_CUDA=1
 
 # Upgrade pip
@@ -28,9 +31,6 @@ RUN pip install torch torchvision torchaudio --extra-index-url https://download.
 RUN pip install gradio==4.44.1
 
 # Download pretrained models
-# Copy the current directory contents into the container at /usr/src/app
-COPY . .
-
 RUN sh download_ckpt.sh
 
 # Make port 6092 available to the world outside this container
