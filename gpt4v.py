@@ -2,6 +2,9 @@ import os
 import base64
 import requests
 from io import BytesIO
+from logger import get_logger
+
+logger = get_logger()
 
 # Get OpenAI API Key from environment variable
 api_key = os.environ["OPENAI_API_KEY"]
@@ -65,5 +68,7 @@ def prepare_inputs(message, image):
 def request_gpt4v(message, image):
     payload = prepare_inputs(message, image)
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+    logger.info("GPT4 response")
+    logger.info(response.json())
     res = response.json()['choices'][0]['message']['content']
     return res
