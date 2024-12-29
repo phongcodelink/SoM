@@ -173,7 +173,8 @@ def inference(image, slider, mode, alpha, label_mode, anno_mode, *args, **kwargs
         return (output, [])
 
 
-def gpt4v_response(message, history):
+def gpt4v_response(message, history=[]):
+    print("<<<<<< START GPT4 FUNCTION")
     global history_images
     global history_texts; history_texts = []    
     try:
