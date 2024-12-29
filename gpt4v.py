@@ -15,6 +15,8 @@ headers = {
     "Authorization": f"Bearer {api_key}"
 }
 
+logger.info(headers)
+
 metaprompt = '''
 - For any marks mentioned in your answer, please highlight them with [].
 '''    
