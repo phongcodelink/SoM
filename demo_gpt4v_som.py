@@ -226,14 +226,12 @@ anno_mode = gr.CheckboxGroup(choices=["Mark", "Mask", "Box"], value=['Mark'], la
 image_out = gr.AnnotatedImage(label="SoM Visual Prompt", height=512)
 runBtn = gr.Button("Run")
 highlightBtn = gr.Button("Highlight")
-user_input = gr.Textbox(label="Chat Input", placeholder="Type your message here...")
-chat_output = gr.Textbox(label="Chat Response", placeholder="GPT-4V's response will appear here...")
-chatBtn = gr.Button("Send")
-slider_alpha = gr.Slider(0, 1, value=0.05, label="Mask Alpha")  # info="Choose in [0, 1]"
+bot = gr.Chatbot(label="GPT-4V + SoM", height=256)
+slider_alpha = gr.Slider(0, 1, value=0.05, label="Mask Alpha") #info="Choose in [0, 1]"
 label_mode = gr.Radio(['Number', 'Alphabet'], value='Number', label="Mark Mode")
 
 title = "Set-of-Mark (SoM) Visual Prompting for Extraordinary Visual Grounding in GPT-4V"
-description = "This is a demo for SoM Prompting to unleash extraordinary visual grounding in GPT-4V. Please upload an image and then click the 'Run' button to get the image with marks. Then chat with GPT-4V below!"
+description = "This is a demo for SoM Prompting to unleash extraordinary visual grounding in GPT-4V. Please upload an image and them click the 'Run' button to get the image with marks. Then chat with GPT-4V below!"
 
 with demo:
     gr.Markdown("<h1 style='text-align: center'><img src='https://som-gpt4v.github.io/website/img/som_logo.png' style='height:50px;display:inline-block'/>  Set-of-Mark (SoM) Prompting Unleashes Extraordinary Visual Grounding in GPT-4V</h1>")
@@ -254,19 +252,12 @@ with demo:
             runBtn.render()
             highlightBtn.render()
     with gr.Row():
-        with gr.Column(scale=2):
-            user_input.render()
-        with gr.Column(scale=1):
-            chatBtn.render()
-    with gr.Row():
-        chat_output.render()
+        gr.ChatInterface(chatbot=bot, fn=gpt4v_response)
 
-    # Bind button clicks to functions
     runBtn.click(inference, inputs=[image, slider, mode, slider_alpha, label_mode, anno_mode],
-                 outputs=image_out)
+              outputs = image_out)
     highlightBtn.click(highlight, inputs=[image, mode, slider_alpha, label_mode, anno_mode],
-                       outputs=image_out)
-    chatBtn.click(gpt4v_response, inputs=[user_input], outputs=[chat_output])
+              outputs = image_out)
 
 demo.launch(share=True, server_port=6092)
 
