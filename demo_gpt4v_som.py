@@ -108,6 +108,7 @@ history_masks = []
 history_texts = []
 @torch.no_grad()
 def inference(image, slider, mode, alpha, label_mode, anno_mode, *args, **kwargs):
+    logger.debug("<<<<< START INFER")
     global history_images; history_images = []
     global history_masks; history_masks = []    
 
