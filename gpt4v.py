@@ -8,6 +8,8 @@ logger = get_logger()
 
 # Get OpenAI API Key from environment variable
 api_key = os.environ["OPENAI_API_KEY"]
+logger.info("Print key")
+logger.info(api_key)
 headers = {
     "Content-Type": "application/json",
     "Authorization": f"Bearer {api_key}"
