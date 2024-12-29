@@ -47,21 +47,25 @@ from pydub import AudioSegment
 from pydub.playback import play
 
 import matplotlib.colors as mcolors
+from logger import get_logger
+
 css4_colors = mcolors.CSS4_COLORS
 color_proposals = [list(mcolors.hex2color(color)) for color in css4_colors.values()]
+
+logger = get_logger()
 
 
 # Function to download files
 def download_file(url, filename):
     if not os.path.exists(filename):
-        print(f"[INFO] Downloading {filename}...")
+        logger.debug(f"[INFO] Downloading {filename}...")
         try:
             urllib.request.urlretrieve(url, filename)
-            print(f"[INFO] {filename} downloaded successfully.")
+            logger.debug(f"[INFO] {filename} downloaded successfully.")
         except Exception as e:
-            print(f"[ERROR] Failed to download {filename}: {e}")
+            logger.debug(f"[ERROR] Failed to download {filename}: {e}")
     else:
-        print(f"[INFO] {filename} already exists. Skipping download.")
+        logger.debug(f"[INFO] {filename} already exists. Skipping download.")
 
 
 # Download necessary files
@@ -93,7 +97,7 @@ model_semsam = BaseModel(opt_semsam, build_model(opt_semsam)).from_pretrained(se
 model_sam = sam_model_registry["vit_h"](checkpoint=sam_ckpt).eval().cuda()
 model_seem = BaseModel_Seem(opt_seem, build_model_seem(opt_seem)).from_pretrained(seem_ckpt).eval().cuda()
 
-print("[INFO] Finish loading model")
+logger.debug("[INFO] Finish loading model")
 
 with torch.no_grad():
     with torch.autocast(device_type='cuda', dtype=torch.float16):
@@ -174,17 +178,17 @@ def inference(image, slider, mode, alpha, label_mode, anno_mode, *args, **kwargs
 
 
 def gpt4v_response(message, history=[]):
-    print("<<<<<< START GPT4 FUNCTION")
+    logger.debug("<<<<<< START GPT4 FUNCTION")
     global history_images
     global history_texts; history_texts = []    
     try:
         res = request_gpt4v(message, history_images[0])
-        print(res)
+        logger.debug(res)
         history_texts.append(res)
         return res
     except Exception as e:
-        print("[ERROR] Error run GPT4 V")
-        print(e)
+        logger.debug("[ERROR] Error run GPT4 V")
+        logger.debug(e)
         return None
 
 def highlight(mode, alpha, label_mode, anno_mode, *args, **kwargs):
