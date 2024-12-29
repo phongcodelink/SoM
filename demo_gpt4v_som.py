@@ -181,16 +181,21 @@ def inference(image, slider, mode, alpha, label_mode, anno_mode, *args, **kwargs
 def gpt4v_response(message, history=[]):
     logger.info("<<<<<< START GPT4 FUNCTION")
     global history_images
-    global history_texts; history_texts = []    
-    try:
-        res = request_gpt4v(message, history_images[0])
-        logger.debug(res)
-        history_texts.append(res)
-        return res
-    except Exception as e:
-        logger.debug("[ERROR] Error run GPT4 V")
-        logger.debug(e)
-        return None
+    global history_texts; history_texts = []
+    res = request_gpt4v(message, history_images[0])
+    logger.info(res)
+    history_texts.append(res)
+    return res
+
+    # try:
+    #     res = request_gpt4v(message, history_images[0])
+    #     logger.debug(res)
+    #     history_texts.append(res)
+    #     return res
+    # except Exception as e:
+    #     logger.debug("[ERROR] Error run GPT4 V")
+    #     logger.debug(e)
+    #     return None
 
 def highlight(mode, alpha, label_mode, anno_mode, *args, **kwargs):
     res = history_texts[0]
